@@ -33,6 +33,10 @@ class Board
     self[start_pos] = nil
   end
 
+  def piece_at?(position)
+    self[position].present?
+  end
+
   def setup_pieces
   end
 
