@@ -6,16 +6,29 @@ class Piece
     @board = board
   end
 
+  def opp_color
+    color == :green ? :magenta : :green
+  end
+
   def present?
     true
   end
-  
+
   def to_s
     " P "
   end
 
+  def inspect
+    { "color" => color, "position" => position, "piece" => self.class }
+  end
+
   def moves
     raise "Calling #moves on Piece superclass"
+  end
+
+  def valid_moves
+    valid_moves_arr = []
+
   end
 end
 

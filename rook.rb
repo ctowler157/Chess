@@ -6,12 +6,12 @@ class Rook < SlidingPieces
     [0, 1],
     [0, -1]
   ]
-  
+
   def deltas
     DELTAS
   end
 
   def to_s
-    " R "
+    " ♜ "
   end
 end

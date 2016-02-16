@@ -19,8 +19,31 @@ class Board
     @grid[row][col] = value
   end
 
+  def check_mate?(color)
+    return false unless in_check?(color)
+
+    pieces_of_color(color).each do |piece|
+      return false unless piece.valid_moves.empty?
+    end
+
+
+    true
+  end
+
   def in_bounds?(position)
     position.all? { |el| el.between?(0, 7)}
+  end
+
+  def in_check?(color)
+    king_pos = king_of_color(color).position
+    opposite_color = color == :green ? :magenta : :green
+    pieces_of_color(opposite_color).each do |piece|
+      piece.moves.each do |position|
+        return true if position == king_pos
+      end
+    end
+
+    false
   end
 
   def move(start_pos, end_pos)
@@ -37,14 +60,91 @@ class Board
     self[position].present?
   end
 
-  def setup_pieces
+  def pieces_of_color(color)
+    pieces = []
+    grid.each do |row|
+      row.each do |piece|
+        pieces << piece if piece.color == color
+      end
+    end
+
+    pieces
   end
 
-  def valid_move?(start_pos, end_pos)
-    true
+  def king_of_color(color)
+    pieces_of_color(color).select { |piece| piece.class == King }[0]
   end
+
+  def dup
+    new_board = Board.new
+    new_board.grid = grid.deep_dup
+    new_board
+  end
+
+  private
+  def setup_pieces
+    setup_pawns
+    setup_knights
+    setup_queens
+    setup_kings
+    setup_bishops
+    setup_rooks
+  end
+
+  def setup_pawns
+    @grid[1].each_index { |idx| self[[1, idx]] = Pawn.new(
+      :green, [1, idx], self) }
+    @grid[6].each_index { |idx| self[[6, idx]] = Pawn.new(
+        :magenta, [6, idx], self) }
+  end
+
+  def setup_knights
+    self[[0, 1]] = Knight.new(:green, [0, 1], self)
+    self[[0, 6]] = Knight.new(:green, [0, 6], self)
+    self[[7, 1]] = Knight.new(:magenta, [7, 1], self)
+    self[[7, 6]] = Knight.new(:magenta, [7, 6], self)
+  end
+
+  def setup_rooks
+    self[[0, 0]] = Rook.new(:green, [0, 0], self)
+    self[[0, 7]] = Rook.new(:green, [0, 7], self)
+    self[[7, 0]] = Rook.new(:magenta, [7, 0], self)
+    self[[7, 7]] = Rook.new(:magenta, [7, 7], self)
+  end
+
+  def setup_bishops
+    self[[0, 2]] = Bishop.new(:green, [0, 2], self)
+    self[[0, 5]] = Bishop.new(:green, [0, 5], self)
+    self[[7, 2]] = Bishop.new(:magenta, [7, 2], self)
+    self[[7, 5]] = Bishop.new(:magenta, [7, 5], self)
+  end
+
+  def setup_queens
+    self[[0, 3]] = Queen.new(:green, [0, 3], self)
+    self[[7, 3]] = Queen.new(:magenta, [7, 3], self)
+  end
+
+  def setup_kings
+
+    self[[0, 4]] = King.new(:green, [0, 4], self)
+    self[[7, 4]] = King.new(:magenta, [7, 4], self)
+  end
+
+  attr_writer :grid
 
 end
+
+
+class Array
+  def deep_dup
+    new_array = []
+    self.each do |el|
+      new_array << (el.is_a?(Array) ? el.deep_dup : el)
+    end
+    new_array
+  end
+end
+
 
 class ChessError < StandardError
 end
