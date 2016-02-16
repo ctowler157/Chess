@@ -6,7 +6,7 @@ require_relative 'queen.rb'
 require_relative 'king.rb'
 require_relative 'knight.rb'
 require_relative 'pawn.rb'
-
+require_relative 'player.rb'
 
 class Game
 
@@ -14,32 +14,37 @@ attr_reader :board, :display
 
   def initialize
     @board = Board.new
-
-
     @display = Display.new(board)
+    @player = Player.new(display)
   end
 
   def run
-    result = nil
-    until result
-      @display.render
-      result = @display.get_input
+    until board.game_over?
+      begin
+        display.render
+        end_pos = nil
+        until end_pos
+          start_pos = @player.move
+          end_pos = @player.move
+        end
+        board.move(start_pos, end_pos)
+        display.render
+      rescue ChessError => e
+        puts e.message
+        STDIN.echo = false
+        STDIN.raw!
+        sleep(3)
+        retry
+      end
     end
-    result
   end
 
-  def get_move
-    
-  end
 
 end
+
+
 
 if __FILE__ == $0
   game = Game.new
   game.run
-  game.board[[2, 5]] = Queen.new(:magenta, [2, 5], game.board)
-  game.board[[1, 5]] = Queen.new(:magenta, [1, 5], game.board)
-  game.display.render
-  # p game.board[[2, 5]].valid_moves
-  p game.board.check_mate?(:green)
 end

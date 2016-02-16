@@ -96,6 +96,10 @@ class Board
     end
   end
 
+  def game_over?
+    check_mate?(:green) || check_mate?(:magenta)
+  end
+
   private
   def setup_pieces
     setup_pawns
