@@ -1,6 +1,6 @@
 class Pawn < Piece
 
-attr_reader :first_move
+attr_accessor :first_move
 
   def initialize(color, position, board)
     super(color, position, board)

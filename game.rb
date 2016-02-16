@@ -10,22 +10,24 @@ require_relative 'player.rb'
 
 class Game
 
-attr_reader :board, :display
+attr_reader :board, :display, :players
 
   def initialize
     @board = Board.new
     @display = Display.new(board)
-    @player = Player.new(display)
+    @players = [Player.new(display, :magenta, "Magenta"),
+      Player.new(display, :green, "Green")]
   end
 
   def run
     until board.game_over?
       begin
+        display.message = "#{players[0].name}'s turn \n"
         display.render
         end_pos = nil
         until end_pos
-          start_pos = @player.move
-          end_pos = @player.move
+          start_pos = pick_piece
+          end_pos = players[0].move
         end
         board.move(start_pos, end_pos)
         display.render
@@ -34,9 +36,28 @@ attr_reader :board, :display
         STDIN.echo = false
         STDIN.raw!
         sleep(3)
+        STDIN.echo = true
+        STDIN.cooked!
         retry
       end
+      players.rotate!
+      if board.in_check?(players[0].color)
+        display.warning = "#{players[0].name} is in Check!!!!!"
+      else
+        display.warning = " \n"
+      end
     end
+    display.warning = "Checkmate! #{players[1].name} wins!"
+    display.render
+  end
+
+  def pick_piece
+    selected = players[0].move
+    unless board[selected].color == players[0].color
+      raise ChessError.new("Can't move opponent's piece!")
+    end
+
+    selected
   end
 
 

@@ -6,9 +6,13 @@ require_relative 'cursorable.rb'
 class Display
   include Cursorable
   attr_reader :board
+  attr_accessor :message, :warning
+
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
+    @message = " \n"
+    @warning = " \n"
   end
 
   def build_grid
@@ -38,7 +42,9 @@ class Display
 
   def render
     system("clear")
+    puts message
     build_grid.each {|row| puts row.join}
+    puts warning
   end
 
 end

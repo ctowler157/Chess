@@ -51,13 +51,16 @@ class Board
 
   def move(start_pos, end_pos)
     unless piece_at?(start_pos)
-      raise ChessError.new("No piece at start location")
+      raise ChessError.new("No piece at selected location")
     end
     unless self[start_pos].valid_moves.include?(end_pos)
       raise ChessError.new("Piece selected can't move there")
     end
     self[end_pos] = self[start_pos]
     self[start_pos] = NullPiece.new
+    if self[end_pos].class == Pawn
+      self[end_pos].first_move = false
+    end
   end
 
   def piece_at?(position)

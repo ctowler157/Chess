@@ -1,6 +1,9 @@
 class Player
-  def initialize(display)
+  attr_reader :color, :name
+  def initialize(display, color, name)
     @display = display
+    @color = color
+    @name = name
   end
 
   def move
