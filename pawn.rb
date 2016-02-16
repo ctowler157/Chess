@@ -23,6 +23,10 @@ attr_accessor :first_move
     [-1, -1]
   ]
 
+  def promoted?
+    position[0] == (color == :green ? 7 : 0)
+  end
+
   def deltas
     color == :green ? TOP_DELTAS : BOTTOM_DELTAS
   end

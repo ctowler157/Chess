@@ -60,7 +60,9 @@ class Board
     self[start_pos] = NullPiece.new
     if self[end_pos].class == Pawn
       self[end_pos].first_move = false
+      promote(end_pos) if self[end_pos].promoted?
     end
+
   end
 
   def piece_at?(position)
@@ -82,6 +84,17 @@ class Board
   end
   def king_of_color(color)
     pieces_of_color(color).select { |piece| piece.class == King }[0]
+  end
+
+  def promote(pos)
+    puts "Promote Pawn: Q or K or B or R"
+    input = gets.chomp.upcase
+    case input
+    when "K"
+      self[pos] = Knight.new(self[pos].color, pos, self)
+    when "Q", "R", "B"
+      self[pos] = Queen.new(self[pos].color, pos, self)
+    end
   end
 
   def dup
