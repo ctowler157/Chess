@@ -13,6 +13,7 @@ class Display
     @cursor_pos = [0, 0]
     @message = " \n"
     @warning = " \n"
+    @selected_pos = nil
   end
 
   def build_grid
@@ -28,13 +29,23 @@ class Display
     end
   end
 
+  def selected_pos(pos)
+    @selected_pos = pos
+  end
+
+  def selected_pos_reset
+    @selected_pos = nil
+  end
+
   def colors_for(i , j)
-    if [i, j] == @cursor_pos
+    if [i, j] == @selected_pos
+      bg = :light_red
+    elsif [i, j] == @cursor_pos
       bg = :light_blue
     elsif (i.even? && j.even?) || (i.odd? && j.odd?)
       bg = :white
     else
-      bg = :black
+      bg = :light_black
     end
     piece = board[[i, j]]
     { background: bg, color: piece.color }

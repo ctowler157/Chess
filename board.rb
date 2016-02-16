@@ -39,7 +39,7 @@ class Board
 
   def in_check?(color)
     king_pos = king_of_color(color).position
-    opposite_color = color == :green ? :magenta : :green
+    opposite_color = color == :black ? :light_white : :black
     pieces_of_color(opposite_color).each do |piece|
       piece.moves.each do |position|
         return true if position == king_pos
@@ -113,7 +113,7 @@ class Board
   end
 
   def game_over?
-    check_mate?(:green) || check_mate?(:magenta)
+    check_mate?(:black) || check_mate?(:light_white)
   end
 
   private
@@ -132,41 +132,41 @@ class Board
 
   def setup_pawns
     @grid[1].each_index { |idx| self[[1, idx]] = Pawn.new(
-      :green, [1, idx], self) }
+      :black, [1, idx], self) }
     @grid[6].each_index { |idx| self[[6, idx]] = Pawn.new(
-        :magenta, [6, idx], self) }
+        :light_white, [6, idx], self) }
   end
 
   def setup_knights
-    self[[0, 1]] = Knight.new(:green, [0, 1], self)
-    self[[0, 6]] = Knight.new(:green, [0, 6], self)
-    self[[7, 1]] = Knight.new(:magenta, [7, 1], self)
-    self[[7, 6]] = Knight.new(:magenta, [7, 6], self)
+    self[[0, 1]] = Knight.new(:black, [0, 1], self)
+    self[[0, 6]] = Knight.new(:black, [0, 6], self)
+    self[[7, 1]] = Knight.new(:light_white, [7, 1], self)
+    self[[7, 6]] = Knight.new(:light_white, [7, 6], self)
   end
 
   def setup_rooks
-    self[[0, 0]] = Rook.new(:green, [0, 0], self)
-    self[[0, 7]] = Rook.new(:green, [0, 7], self)
-    self[[7, 0]] = Rook.new(:magenta, [7, 0], self)
-    self[[7, 7]] = Rook.new(:magenta, [7, 7], self)
+    self[[0, 0]] = Rook.new(:black, [0, 0], self)
+    self[[0, 7]] = Rook.new(:black, [0, 7], self)
+    self[[7, 0]] = Rook.new(:light_white, [7, 0], self)
+    self[[7, 7]] = Rook.new(:light_white, [7, 7], self)
   end
 
   def setup_bishops
-    self[[0, 2]] = Bishop.new(:green, [0, 2], self)
-    self[[0, 5]] = Bishop.new(:green, [0, 5], self)
-    self[[7, 2]] = Bishop.new(:magenta, [7, 2], self)
-    self[[7, 5]] = Bishop.new(:magenta, [7, 5], self)
+    self[[0, 2]] = Bishop.new(:black, [0, 2], self)
+    self[[0, 5]] = Bishop.new(:black, [0, 5], self)
+    self[[7, 2]] = Bishop.new(:light_white, [7, 2], self)
+    self[[7, 5]] = Bishop.new(:light_white, [7, 5], self)
   end
 
   def setup_queens
-    self[[0, 3]] = Queen.new(:green, [0, 3], self)
-    self[[7, 3]] = Queen.new(:magenta, [7, 3], self)
+    self[[0, 3]] = Queen.new(:black, [0, 3], self)
+    self[[7, 3]] = Queen.new(:light_white, [7, 3], self)
   end
 
   def setup_kings
 
-    self[[0, 4]] = King.new(:green, [0, 4], self)
-    self[[7, 4]] = King.new(:magenta, [7, 4], self)
+    self[[0, 4]] = King.new(:black, [0, 4], self)
+    self[[7, 4]] = King.new(:light_white, [7, 4], self)
   end
 
 

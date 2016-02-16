@@ -10,7 +10,7 @@ class Piece
   end
 
   def opp_color
-    color == :green ? :magenta : :green
+    color == :black ? :light_white : :black
   end
 
   def present?

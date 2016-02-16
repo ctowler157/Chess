@@ -15,8 +15,8 @@ attr_reader :board, :display, :players
   def initialize
     @board = Board.new
     @display = Display.new(board)
-    @players = [Player.new(display, :magenta, "Magenta"),
-      Player.new(display, :green, "Green")]
+    @players = [Player.new(display, :light_white, "White"),
+      Player.new(display, :black, "Black")]
   end
 
   def run
@@ -30,6 +30,7 @@ attr_reader :board, :display, :players
           end_pos = players[0].move
         end
         board.move(start_pos, end_pos)
+        display.selected_pos_reset
         display.render
       rescue ChessError => e
         puts e.message
@@ -38,6 +39,7 @@ attr_reader :board, :display, :players
         sleep(3)
         STDIN.echo = true
         STDIN.cooked!
+        display.selected_pos_reset
         retry
       end
       players.rotate!
@@ -57,6 +59,7 @@ attr_reader :board, :display, :players
       raise ChessError.new("Can't move opponent's piece!")
     end
 
+    display.selected_pos(selected)
     selected
   end
 
