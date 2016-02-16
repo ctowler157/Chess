@@ -2,7 +2,7 @@ require_relative 'piece.rb'
 require_relative 'display.rb'
 
 class Board
-  attr_reader :grid
+  attr_accessor :grid
 
   def initialize
     @grid = Array.new(8) { Array.new(8) { NullPiece.new } }
@@ -17,13 +17,16 @@ class Board
   def []=(position, value)
     row, col = position
     @grid[row][col] = value
+    grid[row][col].position = position
   end
 
   def check_mate?(color)
     return false unless in_check?(color)
 
     pieces_of_color(color).each do |piece|
-      return false unless piece.valid_moves.empty?
+      unless piece.valid_moves.empty?
+        return false
+      end
     end
 
 
@@ -47,13 +50,14 @@ class Board
   end
 
   def move(start_pos, end_pos)
-    if self[start_pos].nil?
+    unless piece_at?(start_pos)
       raise ChessError.new("No piece at start location")
-    elsif !valid_move?(start_pos, end_pos)
+    end
+    unless self[start_pos].valid_moves.include?(end_pos)
       raise ChessError.new("Piece selected can't move there")
     end
     self[end_pos] = self[start_pos]
-    self[start_pos] = nil
+    self[start_pos] = NullPiece.new
   end
 
   def piece_at?(position)
@@ -70,7 +74,9 @@ class Board
 
     pieces
   end
-
+  def inspect
+    self[[1, 5]].inspect
+  end
   def king_of_color(color)
     pieces_of_color(color).select { |piece| piece.class == King }[0]
   end
@@ -78,7 +84,16 @@ class Board
   def dup
     new_board = Board.new
     new_board.grid = grid.deep_dup
+    new_board.assign_board
     new_board
+  end
+
+  def assign_board
+    grid.each do |row|
+      row.each do |piece|
+        piece.board = self
+      end
+    end
   end
 
   private
@@ -90,6 +105,10 @@ class Board
     setup_bishops
     setup_rooks
   end
+
+
+
+
 
   def setup_pawns
     @grid[1].each_index { |idx| self[[1, idx]] = Pawn.new(
@@ -130,7 +149,7 @@ class Board
     self[[7, 4]] = King.new(:magenta, [7, 4], self)
   end
 
-  attr_writer :grid
+
 
 end
 
@@ -139,7 +158,7 @@ class Array
   def deep_dup
     new_array = []
     self.each do |el|
-      new_array << (el.is_a?(Array) ? el.deep_dup : el)
+      new_array << (el.is_a?(Array) ? el.deep_dup : el.dup)
     end
     new_array
   end

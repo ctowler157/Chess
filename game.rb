@@ -28,12 +28,18 @@ attr_reader :board, :display
     result
   end
 
+  def get_move
+    
+  end
+
 end
 
 if __FILE__ == $0
   game = Game.new
   game.run
-  game.board[[2, 5]] = Knight.new(:magenta, [2, 5], game.board)
+  game.board[[2, 5]] = Queen.new(:magenta, [2, 5], game.board)
+  game.board[[1, 5]] = Queen.new(:magenta, [1, 5], game.board)
   game.display.render
-  p game.board[[2, 5]].moves
+  # p game.board[[2, 5]].valid_moves
+  p game.board.check_mate?(:green)
 end

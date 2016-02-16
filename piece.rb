@@ -1,5 +1,8 @@
+require 'byebug'
+
 class Piece
   attr_reader :color, :position, :board
+  attr_writer :board, :position
   def initialize(color, position, board)
     @color = color
     @position = position
@@ -27,12 +30,27 @@ class Piece
   end
 
   def valid_moves
-    valid_moves_arr = []
 
+    valid_moves_arr = []
+    # debugger
+    moves.each do |move|
+      new_board = board.dup
+      new_board[move] = new_board[position]
+      new_board[position] = NullPiece.new
+      valid_moves_arr << move unless new_board.in_check?(color)
+    end
+
+    valid_moves_arr
   end
 end
 
 class NullPiece
+
+  def board=(value)
+  end
+
+  def position=(value)
+  end
 
   def present?
     false
