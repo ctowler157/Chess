@@ -1,6 +1,7 @@
 require_relative 'sliding_pieces.rb'
 
 class Bishop < SlidingPieces
+
   DELTAS = [
     [1, 1],
     [-1, -1],

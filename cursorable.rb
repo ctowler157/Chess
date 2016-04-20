@@ -1,6 +1,7 @@
 require "io/console"
 
 module Cursorable
+
   KEYMAP = {
     " " => :space,
     "h" => :left,
@@ -59,9 +60,9 @@ module Cursorable
       input << STDIN.read_nonblock(3) rescue nil
       input << STDIN.read_nonblock(2) rescue nil
     end
-  ensure
-    STDIN.echo = true
-    STDIN.cooked!
+    ensure
+      STDIN.echo = true
+      STDIN.cooked!
 
     return input
   end
@@ -70,4 +71,5 @@ module Cursorable
     new_pos = [@cursor_pos[0] + diff[0], @cursor_pos[1] + diff[1]]
     @cursor_pos = new_pos if @board.in_bounds?(new_pos)
   end
+
 end

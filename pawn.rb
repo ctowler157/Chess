@@ -1,13 +1,10 @@
 class Pawn < Piece
-
 attr_accessor :first_move
 
   def initialize(color, position, board)
     super(color, position, board)
     @first_move = true
   end
-
-
 
   TOP_DELTAS = [
     [1, 0],

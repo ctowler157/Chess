@@ -1,6 +1,7 @@
 require_relative "stepping_pieces.rb"
 
 class King < SteppingPieces
+
   DELTAS = [
     [1, 0],
     [-1, 0],

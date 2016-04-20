@@ -1,5 +1,7 @@
 require_relative 'sliding_pieces.rb'
+
 class Rook < SlidingPieces
+
   DELTAS = [
     [1, 0],
     [-1, 0],
@@ -14,4 +16,5 @@ class Rook < SlidingPieces
   def to_s
     " ♜ "
   end
+
 end

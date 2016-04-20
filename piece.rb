@@ -1,8 +1,7 @@
-require 'byebug'
-
 class Piece
   attr_reader :color, :position, :board
   attr_writer :board, :position
+
   def initialize(color, position, board)
     @color = color
     @position = position
@@ -30,9 +29,7 @@ class Piece
   end
 
   def valid_moves
-
     valid_moves_arr = []
-    # debugger
     moves.each do |move|
       new_board = board.dup
       new_board[move] = new_board[position]

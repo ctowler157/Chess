@@ -29,7 +29,6 @@ class Board
       end
     end
 
-
     true
   end
 
@@ -62,7 +61,6 @@ class Board
       self[end_pos].first_move = false
       promote(end_pos) if self[end_pos].promoted?
     end
-
   end
 
   def piece_at?(position)
@@ -79,16 +77,23 @@ class Board
 
     pieces
   end
+
   def inspect
     self[[1, 5]].inspect
   end
+
   def king_of_color(color)
     pieces_of_color(color).select { |piece| piece.class == King }[0]
   end
 
   def promote(pos)
-    puts "Promote Pawn: Q or K or B or R"
-    input = gets.chomp.upcase
+    input = nil
+
+    until %w(K Q R B).include?(input)
+      puts "Promote Pawn: Q or K or B or R"
+      input = gets.chomp.upcase
+    end
+
     case input
     when "K"
       self[pos] = Knight.new(self[pos].color, pos, self)
@@ -117,6 +122,7 @@ class Board
   end
 
   private
+
   def setup_pieces
     setup_pawns
     setup_knights
@@ -125,10 +131,6 @@ class Board
     setup_bishops
     setup_rooks
   end
-
-
-
-
 
   def setup_pawns
     @grid[1].each_index { |idx| self[[1, idx]] = Pawn.new(
@@ -169,8 +171,6 @@ class Board
     self[[7, 4]] = King.new(:light_white, [7, 4], self)
   end
 
-
-
 end
 
 
@@ -186,12 +186,4 @@ end
 
 
 class ChessError < StandardError
-end
-
-if __FILE__ == $0
-
-  # board[[0, 0]] = piece
-  # board.move([0, 0], [0, 1])
-  # p board[[0, 1]]
-  # board.move([0, 0], [0, 1])
 end

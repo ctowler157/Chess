@@ -1,6 +1,5 @@
 require 'colorize'
 require_relative 'board.rb'
-require 'byebug'
 require_relative 'cursorable.rb'
 
 class Display
