@@ -66,6 +66,6 @@ This was started with [Charles](https://github.com/ckuang) but completed alone.
     <p>
       If a player is in check and has no possible moves to remove the threat, that player is in checkmate.  The opposing player wins, and the game ends.
     </p>
-    <img src="assets/images/checkmate.png" />
+    <img src="assets/images/check_mate.png" />
   </li>
 </ul>
