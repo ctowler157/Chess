@@ -1,11 +1,11 @@
 require_relative 'board.rb'
 require_relative 'display.rb'
-require_relative 'rook.rb'
-require_relative 'bishop.rb'
-require_relative 'queen.rb'
-require_relative 'king.rb'
-require_relative 'knight.rb'
-require_relative 'pawn.rb'
+require_relative './pieces/rook.rb'
+require_relative './pieces/bishop.rb'
+require_relative './pieces/queen.rb'
+require_relative './pieces/king.rb'
+require_relative './pieces/knight.rb'
+require_relative './pieces/pawn.rb'
 require_relative 'player.rb'
 require_relative 'computer_player.rb'
 
@@ -14,6 +14,11 @@ class Game
   attr_reader :board, :display, :players
 
   def initialize
+    @board = Board.new
+    @display = Display.new(board)
+
+    display.title_screen
+
     input = nil
 
     until %w(1 2).include?(input)
@@ -24,19 +29,19 @@ class Game
     setup_board(input.to_i)
   end
 
-  def setup_board(num_players)
-    @board = Board.new
-    @display = Display.new(board)
+  def pick_piece
+    selected = players[0].move(nil)
 
-    if (num_players == 1)
-      @players = [ComputerPlayer.new(board, display, :light_white, "White"),
-        Player.new(display, :black, "Black")]
-    else
-      @players = [Player.new(display, :light_white, "White"),
-        Player.new(display, :black, "Black")]
+    unless board[selected].color == players[0].color
+      if board[selected].color == :white
+        raise ChessError.new("There's no piece there!")
+      else
+        raise ChessError.new("Can't move opponent's piece!")
+      end
     end
 
-    run
+    display.selected_pos(selected)
+    selected
   end
 
   def run
@@ -73,25 +78,16 @@ class Game
     display.render
   end
 
-  def pick_piece
-    selected = players[0].move(nil)
-
-    unless board[selected].color == players[0].color
-      if board[selected].color == :white
-        raise ChessError.new("There's no piece there!")
+  def setup_board(num_players)
+    if (num_players == 1)
+      @players = [ComputerPlayer.new(board, display, :light_white, "White"),
+        Player.new(display, :black, "Black")]
       else
-        raise ChessError.new("Can't move opponent's piece!")
+        @players = [Player.new(display, :light_white, "White"),
+          Player.new(display, :black, "Black")]
+        end
+
+        run
       end
-    end
 
-    display.selected_pos(selected)
-    selected
-  end
-
-end
-
-
-
-if __FILE__ == $0
-  game = Game.new
 end

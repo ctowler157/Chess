@@ -20,10 +20,6 @@ attr_accessor :first_move
     [-1, -1]
   ]
 
-  def promoted?
-    position[0] == (color == :black ? 7 : 0)
-  end
-
   def deltas
     color == :black ? TOP_DELTAS : BOTTOM_DELTAS
   end
@@ -43,6 +39,10 @@ attr_accessor :first_move
     end
 
     possible_moves
+  end
+
+  def promoted?
+    position[0] == (color == :black ? 7 : 0)
   end
 
   def to_s

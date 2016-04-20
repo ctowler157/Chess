@@ -1,5 +1,3 @@
-require_relative 'piece.rb'
-
 class SlidingPieces < Piece
 
   DELTAS = []
@@ -35,5 +33,5 @@ class SlidingPieces < Piece
 
     possible_moves
   end
-  
+
 end

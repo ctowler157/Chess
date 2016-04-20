@@ -8,6 +8,14 @@ class Piece
     @board = board
   end
 
+  def inspect
+    { "color" => color, "position" => position, "piece" => self.class }
+  end
+
+  def moves
+    raise "Calling #moves on Piece superclass"
+  end
+
   def opp_color
     color == :black ? :light_white : :black
   end
@@ -18,14 +26,6 @@ class Piece
 
   def to_s
     " P "
-  end
-
-  def inspect
-    { "color" => color, "position" => position, "piece" => self.class }
-  end
-
-  def moves
-    raise "Calling #moves on Piece superclass"
   end
 
   def valid_moves
@@ -46,6 +46,14 @@ class NullPiece
   def board=(value)
   end
 
+  def color
+    :white
+  end
+  
+  def moves
+    raise "Calling #moves on NullPiece"
+  end
+
   def position=(value)
   end
 
@@ -55,14 +63,6 @@ class NullPiece
 
   def to_s
     "   "
-  end
-
-  def color
-    :white
-  end
-
-  def moves
-    raise "Calling #moves on NullPiece"
   end
 
 end

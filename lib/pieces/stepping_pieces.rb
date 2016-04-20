@@ -28,5 +28,5 @@ class SteppingPieces < Piece
 
     possible_moves
   end
-  
+
 end

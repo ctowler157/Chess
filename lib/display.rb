@@ -28,14 +28,6 @@ class Display
     end
   end
 
-  def selected_pos(pos)
-    @selected_pos = pos
-  end
-
-  def selected_pos_reset
-    @selected_pos = nil
-  end
-
   def colors_for(i , j)
     if [i, j] == @selected_pos
       bg = :light_red
@@ -55,6 +47,24 @@ class Display
     puts message
     build_grid.each {|row| puts row.join}
     puts warning
+  end
+
+  def selected_pos(pos)
+    @selected_pos = pos
+  end
+
+  def selected_pos_reset
+    @selected_pos = nil
+  end
+
+  def title_screen
+    options = { background: :light_white, color: :black }
+    system("clear")
+    puts("                          ".colorize(options))
+    puts("         Welcome          ".colorize(options))
+    puts("           to             ".colorize(options))
+    puts("        Ruby Chess        ".colorize(options))
+    puts("                          ".colorize(options))
   end
 
 end

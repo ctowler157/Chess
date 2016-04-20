@@ -1,4 +1,4 @@
-require_relative 'piece.rb'
+require_relative './pieces/piece.rb'
 require_relative 'display.rb'
 
 class Board
@@ -32,6 +32,10 @@ class Board
     true
   end
 
+  def game_over?
+    check_mate?(:black) || check_mate?(:light_white)
+  end
+
   def in_bounds?(position)
     position.all? { |el| el.between?(0, 7)}
   end
@@ -46,6 +50,10 @@ class Board
     end
 
     false
+  end
+
+  def king_of_color(color)
+    pieces_of_color(color).select { |piece| piece.class == King }[0]
   end
 
   def move(start_pos, end_pos)
@@ -76,14 +84,6 @@ class Board
     end
 
     pieces
-  end
-
-  def inspect
-    self[[1, 5]].inspect
-  end
-
-  def king_of_color(color)
-    pieces_of_color(color).select { |piece| piece.class == King }[0]
   end
 
   def promote(pos)
@@ -117,11 +117,33 @@ class Board
     end
   end
 
-  def game_over?
-    check_mate?(:black) || check_mate?(:light_white)
+  private
+
+  def setup_bishops
+    self[[0, 2]] = Bishop.new(:black, [0, 2], self)
+    self[[0, 5]] = Bishop.new(:black, [0, 5], self)
+    self[[7, 2]] = Bishop.new(:light_white, [7, 2], self)
+    self[[7, 5]] = Bishop.new(:light_white, [7, 5], self)
   end
 
-  private
+  def setup_kings
+    self[[0, 4]] = King.new(:black, [0, 4], self)
+    self[[7, 4]] = King.new(:light_white, [7, 4], self)
+  end
+
+  def setup_knights
+    self[[0, 1]] = Knight.new(:black, [0, 1], self)
+    self[[0, 6]] = Knight.new(:black, [0, 6], self)
+    self[[7, 1]] = Knight.new(:light_white, [7, 1], self)
+    self[[7, 6]] = Knight.new(:light_white, [7, 6], self)
+  end
+
+  def setup_pawns
+    @grid[1].each_index { |idx| self[[1, idx]] = Pawn.new(
+      :black, [1, idx], self) }
+    @grid[6].each_index { |idx| self[[6, idx]] = Pawn.new(
+        :light_white, [6, idx], self) }
+  end
 
   def setup_pieces
     setup_pawns
@@ -132,18 +154,9 @@ class Board
     setup_rooks
   end
 
-  def setup_pawns
-    @grid[1].each_index { |idx| self[[1, idx]] = Pawn.new(
-      :black, [1, idx], self) }
-    @grid[6].each_index { |idx| self[[6, idx]] = Pawn.new(
-        :light_white, [6, idx], self) }
-  end
-
-  def setup_knights
-    self[[0, 1]] = Knight.new(:black, [0, 1], self)
-    self[[0, 6]] = Knight.new(:black, [0, 6], self)
-    self[[7, 1]] = Knight.new(:light_white, [7, 1], self)
-    self[[7, 6]] = Knight.new(:light_white, [7, 6], self)
+  def setup_queens
+    self[[0, 3]] = Queen.new(:black, [0, 3], self)
+    self[[7, 3]] = Queen.new(:light_white, [7, 3], self)
   end
 
   def setup_rooks
@@ -153,26 +166,7 @@ class Board
     self[[7, 7]] = Rook.new(:light_white, [7, 7], self)
   end
 
-  def setup_bishops
-    self[[0, 2]] = Bishop.new(:black, [0, 2], self)
-    self[[0, 5]] = Bishop.new(:black, [0, 5], self)
-    self[[7, 2]] = Bishop.new(:light_white, [7, 2], self)
-    self[[7, 5]] = Bishop.new(:light_white, [7, 5], self)
-  end
-
-  def setup_queens
-    self[[0, 3]] = Queen.new(:black, [0, 3], self)
-    self[[7, 3]] = Queen.new(:light_white, [7, 3], self)
-  end
-
-  def setup_kings
-
-    self[[0, 4]] = King.new(:black, [0, 4], self)
-    self[[7, 4]] = King.new(:light_white, [7, 4], self)
-  end
-
 end
-
 
 class Array
   def deep_dup
@@ -183,7 +177,6 @@ class Array
     new_array
   end
 end
-
 
 class ChessError < StandardError
 end
