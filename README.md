@@ -1,16 +1,10 @@
 #Ruby Chess#
 
-This was started with [Charles](https://github.com/ckuang) but completed alone.
-
 ## To get started
-  <p>
-    <em>Make sure you have Ruby installed. A good tutorial can be found here <a href="http://installrails.com/steps">Ruby Installation Tutorial</a></em>
-  </p>
   <ol>
-    <li>Download the ruby file <a href="https://github.com/ctowler157/Chess/archive/master.zip">here</a></li>
-    <li>Unzip the file</li>
+    <li>Clone the repo https://github.com/ctowler157/Chess.git</li>
     <li>Navigate to the folder in terminal</li>
-    <li>Run the command <code>$ bundle install </code> in the terminal to install the colorize gem</li>
+    <li>Run the command <code>$ bundle install </code></li>
     <li>
       <p>
         Run the command <code>$ ruby chess.rb </code> to start the game.  You should see a title screen

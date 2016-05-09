@@ -63,6 +63,11 @@ class Board
     unless self[start_pos].valid_moves.include?(end_pos)
       raise ChessError.new("Piece selected can't move there")
     end
+
+    move!(start_pos, end_pos)
+  end
+
+  def move!(start_pos, end_pos)
     self[end_pos] = self[start_pos]
     self[start_pos] = NullPiece.new
     if self[end_pos].class == Pawn
