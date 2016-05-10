@@ -124,23 +124,12 @@ class Board
 
   private
 
-  def setup_bishops
-    self[[0, 2]] = Bishop.new(:black, [0, 2], self)
-    self[[0, 5]] = Bishop.new(:black, [0, 5], self)
-    self[[7, 2]] = Bishop.new(:light_white, [7, 2], self)
-    self[[7, 5]] = Bishop.new(:light_white, [7, 5], self)
-  end
-
-  def setup_kings
-    self[[0, 4]] = King.new(:black, [0, 4], self)
-    self[[7, 4]] = King.new(:light_white, [7, 4], self)
-  end
-
-  def setup_knights
-    self[[0, 1]] = Knight.new(:black, [0, 1], self)
-    self[[0, 6]] = Knight.new(:black, [0, 6], self)
-    self[[7, 1]] = Knight.new(:light_white, [7, 1], self)
-    self[[7, 6]] = Knight.new(:light_white, [7, 6], self)
+  def setup_back_rows
+    pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+    pieces.each_with_index do |piece, col|
+      self[[0, col]] = piece.new(:black, [0, col], self)
+      self[[7, col]] = piece.new(:light_white, [7, col], self)
+    end
   end
 
   def setup_pawns
@@ -152,25 +141,8 @@ class Board
 
   def setup_pieces
     setup_pawns
-    setup_knights
-    setup_queens
-    setup_kings
-    setup_bishops
-    setup_rooks
+    setup_back_rows
   end
-
-  def setup_queens
-    self[[0, 3]] = Queen.new(:black, [0, 3], self)
-    self[[7, 3]] = Queen.new(:light_white, [7, 3], self)
-  end
-
-  def setup_rooks
-    self[[0, 0]] = Rook.new(:black, [0, 0], self)
-    self[[0, 7]] = Rook.new(:black, [0, 7], self)
-    self[[7, 0]] = Rook.new(:light_white, [7, 0], self)
-    self[[7, 7]] = Rook.new(:light_white, [7, 7], self)
-  end
-
 end
 
 class Array
