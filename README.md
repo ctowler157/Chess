@@ -2,9 +2,9 @@
 
 ## To get started
   <ol>
-    <li>Run the command <code>$ git clone https://github.com/ctowler157/Chess.git </code></li>
-    <li>Run the command <code>$ cd Chess </code></li>
-    <li>Run the command <code>$ bundle install </code></li>
+    <li><code>$ git clone https://github.com/ctowler157/Chess.git </code></li>
+    <li><code>$ cd Chess </code></li>
+    <li><code>$ bundle install </code></li>
     <li>
       <p>
         Run the command <code>$ ruby chess.rb </code> to start the game.  You should see a title screen
